@@ -18,7 +18,7 @@ const useCreateProgress = () => {
     onSubmit: async ( { value, formApi } ) => {
       try {
         const date = moment().format( 'YYYYMMDD' );
-        await create( { data: { date, ...value } } );
+        await create.mutate( { data: { date, ...value } } );
       } catch ( error ) {
         if ( error instanceof HTTPError ) {
           const errors = await error.response.json();

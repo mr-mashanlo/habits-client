@@ -10,14 +10,12 @@ const useUpdateProgressTotal = () => {
   const { create: updateProgress } = useProgress();
 
   useEffect( () => {
-
     if ( isHabitPending || isProgressPending ) return;
     if ( !habit || !progress ) return;
     if ( habit.total === progress.total ) return;
 
     const date = moment().format( 'YYYYMMDD' );
-    updateProgress( { data: { date, total: habit.total } } );
-
+    updateProgress.mutate( { data: { date, total: habit.total } } );
   }, [ habit, progress, isHabitPending, isProgressPending, updateProgress ] );
 
 };

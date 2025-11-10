@@ -9,7 +9,7 @@ const useProgress = ( params?: SearchParams ) => {
 
   const queryClient = useQueryClient();
 
-  const result = useQuery( {
+  const progress = useQuery( {
     queryKey: [ 'progress' ],
     queryFn: async () => await progressService.fetch( params ),
     placeholderData: data => data
@@ -31,10 +31,10 @@ const useProgress = ( params?: SearchParams ) => {
   } );
 
   return {
-    ...result,
-    create: create.mutate,
-    update: update.mutate,
-    remove: remove.mutate
+    progress,
+    create,
+    update,
+    remove
   };
 
 };
