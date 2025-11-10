@@ -17,7 +17,7 @@ const CreateHabitButton: FC<Props> = ( { children, ...others } ) => {
 
   const handleButtonClick = () => {
     const days = [ String( new Date().getDay() ) ];
-    const title = titles[ Math.floor( Math.random() * ( titles.length + 1 ) ) ];
+    const title = titles[ Math.floor( Math.random() * titles.length ) ];
     createHabit( title, days );
   };
 
