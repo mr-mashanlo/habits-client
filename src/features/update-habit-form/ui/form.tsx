@@ -1,10 +1,11 @@
 import { Description, Field, Fieldset, Input, Label } from '@headlessui/react';
-import { type ChangeEvent, type FC, type FormEvent } from 'react';
+import { type ChangeEvent, type FC } from 'react';
 import z from 'zod';
 
 import type { Habit } from '@/entities/habit';
 import { debounce } from '@/shared/utils/debounce';
 
+import { week } from '../model/config';
 import useUpdateHabit from '../model/hook';
 
 interface Props {
@@ -14,20 +15,20 @@ interface Props {
 const UpdateHabitForm: FC<Props> = ( { habit } ) => {
   const form = useUpdateHabit( habit );
 
-  const handleFormSubmit = ( e: FormEvent<HTMLFormElement> ) => {
+  const handleFormSubmit = ( e: ChangeEvent<HTMLFormElement> ) => {
     e.preventDefault();
     e.stopPropagation();
     form.handleSubmit();
   };
 
-  const updateHabit = debounce( ( e: FormEvent<HTMLFormElement> ) => handleFormSubmit( e ), 1000 );
+  const updateHabit = debounce( ( e: ChangeEvent<HTMLFormElement> ) => handleFormSubmit( e ), 1000 );
 
-  const handleFormChange = ( e: FormEvent<HTMLFormElement> ) => { updateHabit( e ); };
-
-  const handleCheckboxChange = ( e: ChangeEvent<HTMLInputElement> ) => {
-    const { checked, value } = e.target;
-    const days = form.getFieldValue( 'days' );
-    form.setFieldValue( 'days', checked ? [ ...days, value ] : days.filter( day => day !== value ) );
+  const handleFormChange = ( e: ChangeEvent<HTMLFormElement> ) => {
+    const { checked: completed, value: day } = e.target;
+    const cacheDays = form.getFieldValue( 'days' );
+    const updatedDays = completed ? [ ...cacheDays, day ] : cacheDays.filter( item => item !== day );
+    form.setFieldValue( 'days', updatedDays ) ;
+    updateHabit( e );
   };
 
   return (
@@ -40,34 +41,12 @@ const UpdateHabitForm: FC<Props> = ( { habit } ) => {
       />
       <form.Field name="days" children={field =>
         <Fieldset className="grid grid-cols-7 col-span-2">
-          <Field>
-            <Input type="checkbox" name={field.name} onChange={handleCheckboxChange} checked={field.state.value.includes( '1' )} value="1" className="peer sr-only" />
-            <Label className="flex items-center justify-center cursor-pointer text-zinc-300 peer-checked:text-black peer-focus-visible:outline-2 peer-focus-visible:outline-black">Mo</Label>
-          </Field>
-          <Field>
-            <Input type="checkbox" name={field.name} onChange={handleCheckboxChange} checked={field.state.value.includes( '2' )} value="2" className="peer sr-only" />
-            <Label className="flex items-center justify-center cursor-pointer text-zinc-300 peer-checked:text-black peer-focus-visible:outline-2 peer-focus-visible:outline-black">Tu</Label>
-          </Field>
-          <Field>
-            <Input type="checkbox" name={field.name} onChange={handleCheckboxChange} checked={field.state.value.includes( '3' )} value="3" className="peer sr-only" />
-            <Label className="flex items-center justify-center cursor-pointer text-zinc-300 peer-checked:text-black peer-focus-visible:outline-2 peer-focus-visible:outline-black">We</Label>
-          </Field>
-          <Field>
-            <Input type="checkbox" name={field.name} onChange={handleCheckboxChange} checked={field.state.value.includes( '4' )} value="4" className="peer sr-only" />
-            <Label className="flex items-center justify-center cursor-pointer text-zinc-300 peer-checked:text-black peer-focus-visible:outline-2 peer-focus-visible:outline-black">Th</Label>
-          </Field>
-          <Field>
-            <Input type="checkbox" name={field.name} onChange={handleCheckboxChange} checked={field.state.value.includes( '5' )} value="5" className="peer sr-only" />
-            <Label className="flex items-center justify-center cursor-pointer text-zinc-300 peer-checked:text-black peer-focus-visible:outline-2 peer-focus-visible:outline-black">Fr</Label>
-          </Field>
-          <Field>
-            <Input type="checkbox" name={field.name} onChange={handleCheckboxChange} checked={field.state.value.includes( '6' )} value="6" className="peer sr-only" />
-            <Label className="flex items-center justify-center cursor-pointer text-zinc-300 peer-checked:text-black peer-focus-visible:outline-2 peer-focus-visible:outline-black">Sa</Label>
-          </Field>
-          <Field>
-            <Input type="checkbox" name={field.name} onChange={handleCheckboxChange} checked={field.state.value.includes( '0' )} value="0" className="peer sr-only" />
-            <Label className="flex items-center justify-center cursor-pointer text-zinc-300 peer-checked:text-black peer-focus-visible:outline-2 peer-focus-visible:outline-black">Su</Label>
-          </Field>
+          {week.map( day =>
+            <Field key={day.number}>
+              <Input type="checkbox" name={field.name} checked={field.state.value.includes( day.number )} value={day.number} className="peer sr-only" readOnly />
+              <Label className="flex items-center justify-center cursor-pointer text-zinc-300 peer-checked:text-black peer-focus-visible:outline-2 peer-focus-visible:outline-black">{day.name}</Label>
+            </Field>
+          )}
         </Fieldset>
       }
       />
