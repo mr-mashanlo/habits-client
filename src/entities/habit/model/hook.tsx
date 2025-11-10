@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { SearchParams } from '@/shared/types';
 
 import { habitService } from '../api/api';
-import type { HabitDTO } from './schema';
+import type { Habit, HabitDTO, PaginatedHabit } from './schema';
 
 const useHabit = ( params?: SearchParams ) => {
 
@@ -16,8 +16,22 @@ const useHabit = ( params?: SearchParams ) => {
   } );
 
   const create = useMutation( {
-    mutationFn: async ( { data }: { data: HabitDTO } ) => await habitService.create( data ),
-    onSuccess: () => queryClient.invalidateQueries( { queryKey: [ 'habits' ] } )
+    mutationFn: ( { data }: { data: HabitDTO } ) => habitService.create( data ),
+
+    onMutate: async ( habit, context ) => {
+      await queryClient.cancelQueries( { queryKey: [ 'habits' ] } );
+      const previous = context.client.getQueryData<Array<Habit>>( [ 'habits' ] );
+      queryClient.setQueryData<PaginatedHabit>( [ 'habits' ], old => ( old ? { ...old, data: [ ...old.data, { _id: '1', user: '', ...habit.data } ] } : { data: [], limit: 0, page: 0, total: 0 } ) );
+      return { previous };
+    },
+
+    onSettled: ( _data, _error, _variables, _onMutateResult, context ) => {
+      context.client.invalidateQueries( { queryKey: [ 'habits' ] } );
+    },
+
+    onError: ( _error, _habit, onMutateResult, context ) => {
+      context.client.setQueryData( [ 'todos' ], onMutateResult?.previous );
+    }
   } );
 
   const update = useMutation( {
