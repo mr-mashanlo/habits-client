@@ -21,7 +21,7 @@ const useHabit = ( params?: SearchParams ) => {
     onMutate: async ( habit, context ) => {
       await queryClient.cancelQueries( { queryKey: [ 'habits' ] } );
       const previous = context.client.getQueryData<Array<Habit>>( [ 'habits' ] );
-      queryClient.setQueryData<PaginatedHabit>( [ 'habits' ], old => ( old ? { ...old, data: [ ...old.data, { _id: '1', user: '', ...habit.data } ] } : { data: [], limit: 0, page: 0, total: 0 } ) );
+      queryClient.setQueryData<PaginatedHabit>( [ 'habits' ], old => ( old ? { ...old, data: [ ...old.data, { _id: Date.now().toString(), user: 'temporary', ...habit.data } ] } : { data: [], limit: 0, page: 0, total: 0 } ) );
       return { previous };
     },
 
@@ -30,18 +30,32 @@ const useHabit = ( params?: SearchParams ) => {
     },
 
     onError: ( _error, _habit, onMutateResult, context ) => {
-      context.client.setQueryData( [ 'todos' ], onMutateResult?.previous );
+      context.client.setQueryData( [ 'habits' ], onMutateResult?.previous );
     }
   } );
 
   const update = useMutation( {
-    mutationFn: async ( { id, data }: { id: string, data: Partial<HabitDTO> } ) => await habitService.update( id, data ),
+    mutationFn: ( { id, data }: { id: string, data: Partial<HabitDTO> } ) => habitService.update( id, data ),
     onSuccess: () => queryClient.invalidateQueries( { queryKey: [ 'habits' ] } )
   } );
 
   const remove = useMutation( {
-    mutationFn: async ( { id }: { id: string } ) => await habitService.remove( id ),
-    onSuccess: () => queryClient.invalidateQueries( { queryKey: [ 'habits' ] } )
+    mutationFn: ( { id }: { id: string } ) => habitService.remove( id ),
+
+    onMutate: async ( habit, context ) => {
+      await queryClient.cancelQueries( { queryKey: [ 'habits' ] } );
+      const previous = context.client.getQueryData<Array<Habit>>( [ 'habits' ] );
+      queryClient.setQueryData<PaginatedHabit>( [ 'habits' ], old => ( old ? { ...old, data: old.data.filter( oldHabit => oldHabit._id !== habit.id ) } : { data: [], limit: 0, page: 0, total: 0 } ) );
+      return { previous };
+    },
+
+    onSettled: ( _data, _error, _variables, _onMutateResult, context ) => {
+      context.client.invalidateQueries( { queryKey: [ 'habits' ] } );
+    },
+
+    onError: ( _error, _habit, onMutateResult, context ) => {
+      context.client.setQueryData( [ 'habits' ], onMutateResult?.previous );
+    }
   } );
 
   return {
