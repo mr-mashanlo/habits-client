@@ -13,7 +13,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 const CreateHabitButton: FC<Props> = ( { children, ...others } ) => {
   const { create } = useHabit();
 
-  const createHabit = debounce( ( title: string, days: Array<string> ) => create( { data: { title, days } } ), 500 );
+  const createHabit = debounce( ( title: string, days: Array<string> ) => create.mutate( { data: { title, days } } ), 500 );
 
   const handleButtonClick = () => {
     const days = [ String( new Date().getDay() ) ];

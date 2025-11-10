@@ -6,9 +6,9 @@ import Skeleton from './skeleton';
 import Table from './table';
 
 const Habits: FC = () => {
-  const { data, isPending } = useHabit();
+  const { habits } = useHabit();
 
-  return isPending ? <Skeleton /> : <Table habits={data?.data || []} />;
+  return habits.isPending ? <Skeleton /> : <Table habits={habits.data?.data || []} />;
 };
 
 export default Habits;

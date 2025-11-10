@@ -9,7 +9,7 @@ const useHabit = ( params?: SearchParams ) => {
 
   const queryClient = useQueryClient();
 
-  const result = useQuery( {
+  const habits = useQuery( {
     queryKey: [ 'habits' ],
     queryFn: async () => await habitService.fetch( params ),
     placeholderData: data => data
@@ -31,10 +31,10 @@ const useHabit = ( params?: SearchParams ) => {
   } );
 
   return {
-    ...result,
-    create: create.mutate,
-    update: update.mutate,
-    remove: remove.mutate
+    habits,
+    create,
+    update,
+    remove
   };
 
 };

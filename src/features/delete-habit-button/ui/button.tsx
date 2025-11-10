@@ -12,7 +12,7 @@ const DeleteHabitButton: FC<Props> = ( { id, children, ...others } ) => {
   const { remove } = useHabit();
 
   return (
-    <Button onClick={() => remove( { id } )} {...others}>{children}</Button>
+    <Button onClick={() => remove.mutate( { id } )} {...others}>{children}</Button>
   );
 };
 
