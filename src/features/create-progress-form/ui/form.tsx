@@ -17,18 +17,30 @@ const CreateProgressForm: FC<Props> = ( { habits } ) => {
   const handleFormSubmit = ( e: ChangeEvent<HTMLFormElement> ) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const element = e.target.closest( 'form' );
+    const formdata = new FormData( element || undefined );
+    const data = Object.fromEntries( formdata.entries() );
+    const array = Object.values( data ) as Array<string>;
+    form.setFieldValue( 'habits', array );
+
     form.handleSubmit();
   };
 
   const updateHabit = debounce( ( e: ChangeEvent<HTMLFormElement> ) => handleFormSubmit( e ), 500 );
 
-  const handleFormChange = ( e: ChangeEvent<HTMLFormElement> ) => {
-    const { checked: completed, value: habit } = e.target;
-    const cacheHabits = form.getFieldValue( 'habits' );
-    const updatedHabits = completed ? [ ...cacheHabits, { completed, habit } ] : cacheHabits.filter( item => item.habit !== habit );
-    form.setFieldValue( 'total', habits.length );
-    form.setFieldValue( 'habits', updatedHabits );
-    updateHabit( e );
+  const handleFormChange = ( e: ChangeEvent<HTMLFormElement> ) => { updateHabit( e ); };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleCheckboxChange = ( field: any, habitId: string ) => ( e: ChangeEvent<HTMLInputElement> ) => {
+    const checked = e.target.checked;
+    const value = field.state.value;
+
+    if ( checked ) {
+      field.setValue( [ ...value, habitId ] );
+    } else {
+      field.setValue( value.filter( ( item: string ) => item !== habitId ) );
+    }
   };
 
   return (
@@ -37,7 +49,7 @@ const CreateProgressForm: FC<Props> = ( { habits } ) => {
         habits.map( habit =>
           <Field key={habit._id} className="group flex items-center">
             <Label className="py-2.5 flex items-center gap-4 cursor-pointer">
-              <Input type="checkbox" name={field.name} checked={field.state.value.some( item => item.habit === habit._id )} value={habit._id} className="peer sr-only" readOnly />
+              <Input type="checkbox" name={`habit-${habit._id}`} value={habit._id} checked={field.state.value.some( item => item === habit._id )} onChange={handleCheckboxChange( field, habit._id )} className="peer sr-only" />
               <CheckedIcon className="w-7 h-7 flex items-center justify-center bg-zinc-200/50 fill-zinc-300 rounded-full peer-checked:bg-blue-400/10 peer-checked:fill-blue-400"/>
               <span>{habit.title}</span>
             </Label>

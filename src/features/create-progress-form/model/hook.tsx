@@ -11,8 +11,7 @@ const useCreateProgress = () => {
 
   const form = useForm( {
     defaultValues: {
-      habits: data?.habits || [],
-      total: data?.total || 0
+      habits: data?.habits || []
     },
 
     onSubmit: async ( { value, formApi } ) => {

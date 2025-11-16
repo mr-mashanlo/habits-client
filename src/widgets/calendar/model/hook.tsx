@@ -12,7 +12,7 @@ const useChart = ( progress: Array<Progress>, length: number ) => {
     const recent = Array.from( { length }, ( _, i ) => {
       const date = moment().subtract( i, 'days' ).format( 'YYYYMMDD' );
       const found = progress.find( item => item.date === date );
-      return found || { date, total: 0 };
+      return found || { date, weight: 0 };
     } );
 
     setCharts( recent.reverse() );
