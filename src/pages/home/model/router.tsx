@@ -1,8 +1,9 @@
+import { lazy, Suspense } from 'react';
 import { type RouteObject } from 'react-router';
 
-import HomePage from '../ui/page';
+const LazyHomePage = lazy( () => import( '../ui/page' ) );
 
 export const homeRouter: RouteObject = {
   path: '/',
-  element: <HomePage />
+  element: <Suspense><LazyHomePage /></Suspense>
 };

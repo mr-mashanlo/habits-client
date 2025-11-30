@@ -1,8 +1,9 @@
+import { lazy, Suspense } from 'react';
 import { type RouteObject } from 'react-router';
 
-import TodayPage from '../ui/page';
+const LazyTodayPage = lazy( () => import( '../ui/page' ) );
 
 export const todayRouter: RouteObject = {
   path: '/today',
-  element: <TodayPage />
+  element: <Suspense><LazyTodayPage /></Suspense>
 };

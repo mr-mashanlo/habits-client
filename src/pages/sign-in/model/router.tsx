@@ -1,8 +1,9 @@
+import { lazy, Suspense } from 'react';
 import { type RouteObject } from 'react-router';
 
-import SignInPage from '../ui/page';
+const LazySignInPage = lazy( () => import( '../ui/page' ) );
 
 export const signInRouter: RouteObject = {
   path: '/signin',
-  element: <SignInPage />
+  element: <Suspense><LazySignInPage /></Suspense>
 };
