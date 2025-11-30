@@ -15,18 +15,22 @@ export const TodayPage: FC = () => {
       <meta property="og:site_name" content="Habits" />
       <meta property="twitter:card" content="summary" />
 
-      <div className="p-4 py-10 sm:p-15">
-        <div className="mb-8 flex items-center gap-4">
-          <h1 className="font-bold text-2xl">Today</h1>
-          <span className="font-bold text-2xl text-zinc-200">/</span>
-          <Link to="/habits" className="font-bold text-2xl text-zinc-200 hover:underline hover:text-black">my habits</Link>
-        </div>
+      <header className="mb-8 flex items-center gap-4">
+        <h1 className="font-bold text-2xl">Today</h1>
+        <span className="font-bold text-2xl text-zinc-200">/</span>
+        <Link to="/habits" className="font-bold text-2xl text-zinc-200 hover:underline hover:text-black">my habits</Link>
+      </header>
+
+      <section>
         <Progress />
+      </section>
+
+      <section>
         <div className="mt-15 mb-11">
           <h2 className="font-bold text-2xl">Calendar</h2>
         </div>
         <Calendar />
-      </div>
+      </section>
     </>
   );
 };

@@ -10,14 +10,15 @@ const NotFoundPage: FC = () => {
       <meta property="og:site_name" content="Habits" />
       <meta property="twitter:card" content="summary" />
 
-      <div className="h-screen p-4 py-10 sm:p-15">
-        <div className="mb-8 flex items-center gap-4">
-          <h1 className="font-bold text-2xl">Page 404</h1>
-          <span className="font-bold text-2xl text-zinc-200">/</span>
-          <Link to="/" className="font-bold text-2xl text-zinc-200 hover:underline hover:text-black">go to home</Link>
-        </div>
+      <header className="mb-8 flex items-center gap-4">
+        <h1 className="font-bold text-2xl">Page 404</h1>
+        <span className="font-bold text-2xl text-zinc-200">/</span>
+        <Link to="/" className="font-bold text-2xl text-zinc-200 hover:underline hover:text-black">go to home</Link>
+      </header>
+
+      <section>
         <p>The resource requested could not be found on this server.</p>
-      </div>
+      </section>
     </>
   );
 };

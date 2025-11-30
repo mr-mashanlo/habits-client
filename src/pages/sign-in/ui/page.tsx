@@ -16,7 +16,7 @@ const SigninPage: FC = () => {
       <meta property="og:site_name" content="Habits" />
       <meta property="twitter:card" content="summary" />
 
-      <section className="w-full h-screen p-4 sm:p-15 grid sm:grid-cols-2 gap-10 sm:gap-4">
+      <section className="h-full grid sm:grid-cols-2 gap-10 sm:gap-4">
         <div className="flex justify-center items-center">
           <Family mood={mood} />
         </div>

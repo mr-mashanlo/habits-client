@@ -12,12 +12,13 @@ export const HomePage: FC = () => {
       <meta property="og:site_name" content="Habits" />
       <meta property="twitter:card" content="summary" />
 
-      <div className="p-4 py-10 sm:p-15">
-        <div className="mb-8 flex items-center gap-4">
-          <h1 className="font-bold text-2xl">Home</h1>
-          <span className="font-bold text-2xl text-zinc-200">/</span>
-          <Link to="/habits" className="font-bold text-2xl text-zinc-200 hover:underline hover:text-black">my habits</Link>
-        </div>
+      <header className="mb-8 flex items-center gap-4">
+        <h1 className="font-bold text-2xl">Home</h1>
+        <span className="font-bold text-2xl text-zinc-200">/</span>
+        <Link to="/habits" className="font-bold text-2xl text-zinc-200 hover:underline hover:text-black">my habits</Link>
+      </header>
+
+      <section>
         <p className="mb-8">A minimal habit-tracking app designed to help you build consistency and monitor your daily routines.</p>
         <h2 className="mb-8 font-bold text-2xl">Features:</h2>
         <ul className="mb-8 list-inside list-disc">
@@ -38,7 +39,7 @@ export const HomePage: FC = () => {
             <a href="https://linkedin.com/in/mr-mashanlo" className="text-blue-500 decoration-[.1rem] hover:underline">@mr-mashanlo</a>
           </li>
         </ul>
-      </div>
+      </section>
     </>
   );
 };
