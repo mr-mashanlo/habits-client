@@ -1,10 +1,11 @@
-import AddIcon from './add-icon';
-import CancelIcon from './cancel-icon';
-import CheckedIcon from './checked-icon';
-import ClosedEyeIcon from './closed-eye-icon';
-import EmailIcon from './email-icon';
-import LockIcon from './lock-icon';
-import OpenEyeIcon from './open-eye-icon';
+import AddIcon from './add';
+import CancelIcon from './cancel';
+import CheckedIcon from './checked';
+import ClosedEyeIcon from './closed-eye';
+import EmailIcon from './email';
+import LockIcon from './lock';
+import OpenEyeIcon from './open-eye';
+import WarningIcon from './warning';
 
 export {
   AddIcon,
@@ -13,5 +14,6 @@ export {
   ClosedEyeIcon,
   EmailIcon,
   LockIcon,
-  OpenEyeIcon
+  OpenEyeIcon,
+  WarningIcon
 };
