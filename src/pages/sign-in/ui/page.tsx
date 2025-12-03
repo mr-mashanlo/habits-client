@@ -1,11 +1,8 @@
-import { type FC, useState } from 'react';
+import { type FC } from 'react';
 
 import { SignInForm } from '@/features/signin-form';
-import { Family } from '@/widgets/family';
 
 const SigninPage: FC = () => {
-  const [ mood, setMood ] = useState<'neutral' | 'angry' | 'sad'>( 'neutral' );
-
   return (
     <>
       <title>Habits - Sign in</title>
@@ -16,13 +13,8 @@ const SigninPage: FC = () => {
       <meta property="og:site_name" content="Habits" />
       <meta property="twitter:card" content="summary" />
 
-      <section className="h-full grid sm:grid-cols-2 gap-10 sm:gap-4">
-        <div className="flex justify-center items-center">
-          <Family mood={mood} />
-        </div>
-        <div className="flex justify-center items-center">
-          <SignInForm setMood={setMood} />
-        </div>
+      <section className="h-full flex justify-center items-center">
+        <SignInForm />
       </section>
     </>
   );
