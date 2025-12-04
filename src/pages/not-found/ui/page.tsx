@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 const NotFoundPage: FC = () => {
   return (
-    <>
+    <div className="p-5 sm:p-15">
       <title>Page not found</title>
       <meta property="og:title" content="Page not found" />
       <meta property="og:image" content="/meta.svg" />
@@ -19,7 +19,7 @@ const NotFoundPage: FC = () => {
       <section>
         <p>The resource requested could not be found on this server.</p>
       </section>
-    </>
+    </div>
   );
 };
 
