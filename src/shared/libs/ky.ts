@@ -1,6 +1,10 @@
 import ky from 'ky';
 
-import { useSessionStore } from '@/entities/session';
+export class UnauthorizedError extends Error {
+  constructor() {
+    super( 'Unauthorized' );
+  }
+}
 
 export const kyInstance = ky.create( {
   prefixUrl: import.meta.env.VITE_BACK_URL,
@@ -13,11 +17,7 @@ export const kyInstance = ky.create( {
   },
   hooks: {
     afterResponse: [
-      async ( _request, _options, response ) => {
-        if ( response.status === 401 ) {
-          useSessionStore.getState().setIsAuthorized( false );
-        }
-      }
+      async ( _request, _options, response ) => { if ( response.status === 401 ) throw new UnauthorizedError(); }
     ]
   }
 } );
