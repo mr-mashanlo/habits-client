@@ -1,21 +1,23 @@
 import { z } from 'zod';
 
-import type { PaginatedResponse } from '@/shared/types';
+import { type PaginatedResponse } from '@/shared/types';
 
-export const HabitDTO = z.object( {
-  title: z.string(),
-  days: z.array( z.string() )
+export const HabitDTOSchema = z.object( {
+  title: z.string()
 } );
 
-export const Habit = z.object( {
+export const HabitSchema = z.object( {
   _id: z.string(),
   user: z.string(),
   title: z.string(),
-  days: z.array( z.string() )
+  archived: z.boolean(),
+  created: z.number(),
+  startDate: z.number(),
+  endDate: z.number().optional()
 } );
 
-export type HabitDTO = z.infer<typeof HabitDTO>;
+export type HabitDTO = z.infer<typeof HabitDTOSchema>;
 
-export type Habit = z.infer<typeof Habit>;
+export type Habit = z.infer<typeof HabitSchema>;
 
-export type PaginatedHabit = PaginatedResponse<Habit>
+export type PaginatedHabit = PaginatedResponse<Habit>;
