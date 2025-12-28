@@ -1,7 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import { HTTPError } from 'ky';
 
-import { useSession, useSessionStore } from '@/entities/session';
+import { useAuth } from '@/entities/auth';
 import { mapServerErrors } from '@/shared/mappers';
 
 interface Props {
@@ -10,19 +10,17 @@ interface Props {
 }
 
 const useSignIn = ( { onSuccess, onError }: Props = {} ) => {
-  const { signin } = useSession();
-  const setIsAuthorized = useSessionStore( state => state.setIsAuthorized );
+  const { signin } = useAuth();
 
   const form = useForm( {
     defaultValues: {
-      email: '',
-      password: ''
+      email: 'one@company.com',
+      password: 'one12345'
     },
 
     onSubmit: async ( { value, formApi } ) => {
       try {
         await signin( value );
-        setIsAuthorized( true );
         onSuccess?.();
       } catch ( error ) {
         if ( error instanceof HTTPError ) {

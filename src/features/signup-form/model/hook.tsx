@@ -1,7 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import { HTTPError } from 'ky';
 
-import { useSession, useSessionStore } from '@/entities/session';
+import { useAuth } from '@/entities/auth';
 import { mapServerErrors } from '@/shared/mappers';
 
 interface Props {
@@ -10,8 +10,7 @@ interface Props {
 }
 
 const useSignUp = ( { onSuccess, onError }: Props = {} ) => {
-  const { signup } = useSession();
-  const setIsAuthorized = useSessionStore( state => state.setIsAuthorized );
+  const { signup } = useAuth();
 
   const form = useForm( {
     defaultValues: {
@@ -22,7 +21,6 @@ const useSignUp = ( { onSuccess, onError }: Props = {} ) => {
     onSubmit: async ( { value, formApi } ) => {
       try {
         await signup( value );
-        setIsAuthorized( true );
         onSuccess?.();
       } catch ( error ) {
         if ( error instanceof HTTPError ) {

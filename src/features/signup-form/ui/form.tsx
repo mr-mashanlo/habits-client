@@ -17,9 +17,9 @@ const variants = {
 
 const SignUpForm: FC = () => {
   const navigate = useNavigate();
-  const form = useSignUp( { onSuccess: () => navigate( '/' ) } );
-  const canSubmit = useStore( form.store, ( state ) => state.canSubmit );
-  const metaData = useStore( form.store, ( state ) => state.fieldMeta );
+  const form = useSignUp( { onSuccess: () => navigate( '/welcome', { replace: true } ) } );
+  const canSubmit = useStore( form.store, state => state.canSubmit );
+  const metaData = useStore( form.store, state => state.fieldMeta );
   const [ isPasswordVisible, setIsPasswordVisible ] = useState<boolean>( false );
 
   const handleFormSubmit = ( e: FormEvent<HTMLFormElement> ) => {
@@ -42,13 +42,13 @@ const SignUpForm: FC = () => {
         <Legend className="text-3xl text-center font-bold">Sign up</Legend>
         <form.Field name="email" validators={{ onChange: z.email( 'Invalid email address' ) }} children={field =>
           <Field className="block mt-8 relative">
-            <Input id={field.name} name={field.name} value={field.state.value} onChange={e => field.handleChange( e.target.value )} data-error={field.state.meta.isValid ? false : true} type="email" placeholder="name@company.com" className="peer w-full p-5 pl-14 rounded-2xl bg-zinc-100 placeholder:text-zinc-400/50 focus:bg-transparent data-[error=true]:outline-rose-500" />
+            <Input type="email" name={field.name} value={field.state.value} onChange={e => field.handleChange( e.target.value )} data-error={field.state.meta.isValid ? false : true} placeholder="name@company.com" className="peer w-full p-5 pl-14 rounded-2xl bg-zinc-100 placeholder:text-zinc-400/50 focus:bg-transparent data-[error=true]:outline-rose-500" />
             {!field.state.meta.isValid ? <WarningIcon className="w-5 h-5 fill-red-500 absolute top-1/2 left-5 -translate-y-1/2" aria-hidden="true" /> : <EmailIcon className="w-5 h-5 fill-zinc-400/50 peer-focus:fill-black absolute top-1/2 left-5 -translate-y-1/2" aria-hidden="true" />}
           </Field> }
         />
         <form.Field name="password" validators={{ onChange: z.string().min( 8, 'Password must be at least 8 characters long' ) }} children={field =>
           <Field className="block mt-5 relative">
-            <Input id={field.name} name={field.name} value={field.state.value} onChange={e => field.handleChange( e.target.value )} data-error={field.state.meta.isValid ? false : true} type={isPasswordVisible ? 'text' : 'password'} placeholder="•••••••••" className="peer w-full p-5 pl-14 rounded-2xl bg-zinc-100 placeholder:text-zinc-400/50 focus:bg-transparent data-[error=true]:outline-rose-500" />
+            <Input type={isPasswordVisible ? 'text' : 'password'} name={field.name} value={field.state.value} onChange={e => field.handleChange( e.target.value )} data-error={field.state.meta.isValid ? false : true} placeholder="•••••••••" className="peer w-full p-5 pl-14 rounded-2xl bg-zinc-100 placeholder:text-zinc-400/50 focus:bg-transparent data-[error=true]:outline-rose-500" />
             {!field.state.meta.isValid ? <WarningIcon className="w-5 h-5 fill-red-500 absolute top-1/2 left-5 -translate-y-1/2" aria-hidden="true" /> : <LockIcon className="w-5 h-5 fill-zinc-400/50 peer-focus:fill-black absolute top-1/2 left-5 -translate-y-1/2" aria-hidden="true" />}
             <Button onClick={handlePasswordClick} type="button" className="w-6 h-6 absolute top-1/2 right-5 -translate-y-1/2 cursor-pointer">{isPasswordVisible ? <OpenEyeIcon className="w-5 h-5 fill-zinc-400/50" /> : <ClosedEyeIcon className="w-5 h-5 fill-zinc-400/50" />}</Button>
           </Field> }
@@ -59,7 +59,7 @@ const SignUpForm: FC = () => {
       </Fieldset>
       <p className="mt-5 text-center leading-6">Already have an account? <Link to="/signin" className="font-bold decoration-[.1rem] hover:underline">Log in</Link></p>
       <AnimatePresence>
-        {!canSubmit && <motion.p key={getErrorMessages().length} variants={variants} initial="initial" whileInView="whileInView" exit="exit" className="w-full mt-3 px-3 text-center text-red-500 absolute top-full">{getErrorMessages().join( ', ' )}</motion.p>}
+        {!canSubmit && <motion.p key={getErrorMessages().length} variants={variants} initial="initial" whileInView="whileInView" exit="exit" className="w-full mt-3 px-3 text-center text-red-600 absolute top-full">{getErrorMessages().join( ', ' )}</motion.p>}
       </AnimatePresence>
     </form>
   );
