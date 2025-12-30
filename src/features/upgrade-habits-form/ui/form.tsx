@@ -53,7 +53,7 @@ const UpgradeHabitsForm: FC<Props> = ( { habits, ...others } ) => {
             <Field key={habit._id} className="group flex items-center gap-5">
               <Input type="checkbox" name="done" id={entry._id || `${habit._id}-${index}`} data-habit={entry.habit} value={entry._id} checked={entry.done} onChange={handleCheckboxChange} onBlur={handleCheckboxBlur} className="sr-only" />
               <Label htmlFor={entry._id || `${habit._id}-${index}`} className="cursor-pointer">{entry?.done ? <CheckedIcon className="w-4 h-4 fill-zinc-500 shrink-0" /> : <SquareIcon className="w-4 h-4 fill-zinc-300 shrink-0" />}</Label>
-              <Input type="text" name="title" data-id={habit._id} value={habit.title} onChange={handleInputChange}  className="outline-0" />
+              <Input type="text" name="title" data-id={habit._id} value={habit.title} onChange={handleInputChange} className="outline-0" />
             </Field>
           )}
         </Fieldset> }
