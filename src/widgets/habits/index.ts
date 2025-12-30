@@ -1,3 +1,3 @@
-import Habits from './ui/habits';
+import Habits from './ui/widget';
 
 export { Habits };
