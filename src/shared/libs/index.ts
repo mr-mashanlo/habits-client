@@ -1,3 +1,3 @@
-import { kyInstance } from './ky';
+import { kyInstance, UnauthorizedError } from './ky';
 
-export { kyInstance };
+export { kyInstance, UnauthorizedError };

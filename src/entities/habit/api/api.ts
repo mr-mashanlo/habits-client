@@ -1,11 +1,11 @@
 import { kyInstance } from '@/shared/libs';
-import type { SearchParams } from '@/shared/types';
+import { type HabitSearchParams } from '@/shared/types';
 
-import type { Habit, HabitDTO, PaginatedHabit } from '../model/schema';
+import { type Habit, type HabitDTO, type PaginatedHabit } from '../model/schema';
 
 class HabitService {
 
-  fetch = async ( params?: SearchParams ): Promise<PaginatedHabit> => {
+  fetch = async ( params?: HabitSearchParams ): Promise<PaginatedHabit> => {
     const searchParams = new URLSearchParams( params );
     const response = await kyInstance( `habit?${searchParams}` );
     return await response.json();
@@ -16,18 +16,8 @@ class HabitService {
     return await response.json();
   };
 
-  update = async ( id: string, data: Partial<HabitDTO> ): Promise<Habit> => {
-    const response = await kyInstance( `habit/${id}`, { method: 'put', body: JSON.stringify( data ) } );
-    return await response.json();
-  };
-
-  remove = async ( id: string ): Promise<{ ok: boolean }> => {
-    const response = await kyInstance( `habit/${id}`, { method: 'delete' } );
-    return await response.json();
-  };
-
-  today = async (): Promise<PaginatedHabit> => {
-    const response = await kyInstance( 'habit/today' );
+  upgradeMany = async ( data: { data: Array<HabitDTO> } ): Promise<Habit> => {
+    const response = await kyInstance( 'habit/many', { method: 'post', body: JSON.stringify( data ) } );
     return await response.json();
   };
 

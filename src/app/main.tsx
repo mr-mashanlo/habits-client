@@ -8,7 +8,7 @@ import { RouterProvider } from 'react-router';
 
 import router from './router';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 createRoot( document.getElementById( 'root' )! ).render(
   <StrictMode>

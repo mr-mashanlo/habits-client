@@ -1,12 +1,25 @@
-import { type FC } from 'react';
-import { Outlet } from 'react-router';
+import { type FC, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router';
+
+import { UnauthorizedError } from '@/shared/libs';
+
+import { queryClient } from '../main';
 
 const MainLayout: FC = () => {
-  return (
-    <div className="p-5 sm:p-15">
-      <Outlet />
-    </div>
-  );
+  const navigate = useNavigate();
+
+  useEffect( () => {
+    const unsubscribe = queryClient.getQueryCache().subscribe( event => {
+      // @ts-expect-error action
+      if ( event?.action?.error instanceof UnauthorizedError ) {
+        navigate( '/signin', { replace: true } );
+      }
+    } );
+
+    return unsubscribe;
+  }, [ navigate ] );
+
+  return <Outlet />;
 };
 
 export default MainLayout;
